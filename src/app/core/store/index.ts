@@ -1,5 +1,5 @@
 import { Action, ActionReducerMap } from '@ngrx/store';
-import { todosRecuder, TodoState } from './todos.reducer';
+import { todoFeatureKey, todosRecuder, TodoState } from './todos.reducer';
 
 export interface AppState {
   // on peut utiliser maintenant l'interface TodoState
@@ -8,7 +8,8 @@ export interface AppState {
 
 // obj passe au StoreModule.forRoot() sur AppModule
 export const rootReducers: ActionReducerMap<AppState, Action> = {
-  todos: todosRecuder,
+  // cette syntaxe avec les [] permet de récupérer la valeur de cette variable comme nom de clé
+  [todoFeatureKey]: todosRecuder,
 };
 
 // a présent nous avons ici la config de tous nos réducers, l'objet rootReducer qui contient tous nos reducers

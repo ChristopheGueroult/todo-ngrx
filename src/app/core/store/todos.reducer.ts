@@ -10,6 +10,10 @@ export interface TodoState {
 export const todoInitialState = {
   data: [{ message: 'test', done: false }],
 };
+
+// nous permet d'utiliser cette constante comme clé sur notre fichier d'index dans rootReducers
+export const todoFeatureKey = 'todos';
+
 // deplace todosReducer
 // après avoir créé nos action, on les utilise dans todosReducer qui effectuera une modif de TodoState en fonction de l'action
 export const todosRecuder = createReducer(
@@ -31,6 +35,8 @@ export const todosRecuder = createReducer(
   on(
     TodosActions.deleteTodoAction,
     (state: TodoState, { index }: { index: number }): TodoState => {
+      console.log(state);
+
       return {
         ...state,
         data: state.data.filter((v, i) => i !== index), // filter return un new tab avec new ref

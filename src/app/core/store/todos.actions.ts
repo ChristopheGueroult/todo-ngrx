@@ -18,10 +18,10 @@ import { Todo } from '../interfaces/todo';
 // props() est une fonction qu'il faut importer depuis ngrx/store. c'est cette fonction qui va nous permettre de passer
 // des data en payload d'une Action. le type de props doit correspondre au type de data qu'on passe au payload
 // le type  de payload est toujours un obj puisque les propriétés de cet objet vont etre mergées avec l'objet créé par createAction()
-export const addTodoAction = createAction(
-  '[todos] Add todo',
-  props<{ item: Todo }>()
-);
+// export const addTodoAction = createAction(
+//   '[todos] Add todo',
+//   props<{ item: Todo }>()
+// );
 // représentation de mon Action ?
 // {
 //   type: '[todos] Add todo',
@@ -38,19 +38,32 @@ export const addTodoAction = createAction(
 
 // deleteTodoAction
 // on veut passer au payload l'index de l'obj à supprimer dans la collection
-export const deleteTodoAction = createAction(
-  '[todos] Add todo',
-  props<{ index: number }>()
-);
+// export const deleteTodoAction = createAction(
+//   '[todos] Delete todo',
+//   props<{ index: number }>()
+// );
 
 // toggleTodoAction
 // on veut passer au payload l'index de l'obj sur lequel on veut change la cle done dans la collection
-export const toggleTodoAction = createAction(
-  '[todos] Add todo',
-  props<{ index: number }>()
-);
+// export const toggleTodoAction = createAction(
+//   '[todos] Toggle todo',
+//   props<{ index: number }>()
+// );
 
 // A présent quand on va dispatch une action depuis n'importe quel endroit de notre appli
 // ngrx va invoquer tous les reducers qui sont déclarés dans StoreModule.forRoot()
 // il va donc invoquer le todosReducer qui doit effectuer une modification du TodoState quand il recoit une action
 // on va maintenant modifier todosReducer
+
+export const addTodoAction = createAction(
+  '[ todos ] add todo',
+  props<{ item: Todo }>()
+);
+export const deleteTodoAction = createAction(
+  '[ todos ] delete todo',
+  props<{ index: number }>()
+);
+export const toggleTodoAction = createAction(
+  '[ todos ] toggle todo',
+  props<{ index: number }>()
+);

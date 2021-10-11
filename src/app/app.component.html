@@ -5,7 +5,9 @@
     <br>
     <li class="card-text" *ngFor="let item of todo$ | async; let i = index">
       <div>{{item.message}}</div>
+      <div>{{item.done}}</div>
       <div>
+        {{i}}
         <button class="btn btn-success" (click)="addTodo()">Add</button>
         <button class="btn btn-primary" (click)="toggleTodo(i)">Toggle</button>
         <button class="btn btn-danger" (click)="deleteTodo(i)">Delete</button>
