@@ -2,33 +2,45 @@ import { createReducer, on } from '@ngrx/store';
 import { Todo } from '../interfaces/todo';
 import * as TodosActions from './todos.actions';
 
-// declarer une interface uniquement pour la clé totos du state global
 export interface TodoState {
   data: Todo[];
+  // pour error
+  error: any;
 }
-// deplace l'init de la cle data du state global
-export const todoInitialState = {
-  data: [{ message: 'test', done: false }],
+// on init le state.todos.data avec un tableau vide car on peut utiliser un effect pour l'init
+export const todoInitialState: TodoState = {
+  data: [],
+  error: null,
 };
 
-// nous permet d'utiliser cette constante comme clé sur notre fichier d'index dans rootReducers
 export const todoFeatureKey = 'todos';
 
-// deplace todosReducer
-// après avoir créé nos action, on les utilise dans todosReducer qui effectuera une modif de TodoState en fonction de l'action
 export const todosRecuder = createReducer(
   todoInitialState,
-  // on() c'est comme un eventListner qui écoute si une action est dispatch
+  on(
+    TodosActions.fetchTodoSuccessAction,
+    (state: TodoState, { todos }: { todos: Todo[] }): TodoState => {
+      return {
+        ...state,
+        data: [...todos],
+      };
+    }
+  ),
+  on(
+    TodosActions.errorTodoAction,
+    (state: TodoState, { error }: { error: any }): TodoState => {
+      return {
+        ...state,
+        error: error,
+      };
+    }
+  ),
   on(
     TodosActions.addTodoAction,
-    // 2e param est une fn qui va etre appelée si addTotoAction est dispatch
-    // cette fn prend 2 params. Le premier est le state à modifier. le deuxième c'est le payload entier {type: string, item: Todo}
-    // ici on va récupérer en 2e param uniquement la clé item (le type pas besoin) avec la description du typage et cette fn doit tjrs return un nouveau TodoState
     (state: TodoState, { item }: { item: Todo }): TodoState => {
       return {
-        ...state, // on destructure pour return un new state cette methode doit etre pure. soit elle return un state inchangé soit, si les state est modifié, elle doit return un new state
-        // jusque là data contient le tableau de Todo[] tel qu'il est dans todoInitialState
-        data: [...state.data, item], // ici on surcharge la clé data qui contient maintenant tous les obj précédents + item qui est l'objet que l'on veut ajouter
+        ...state,
+        data: [...state.data, item],
       };
     }
   ),
@@ -39,7 +51,7 @@ export const todosRecuder = createReducer(
 
       return {
         ...state,
-        data: state.data.filter((v, i) => i !== index), // filter return un new tab avec new ref
+        data: state.data.filter((v, i) => i !== index),
       };
     }
   ),
@@ -48,18 +60,10 @@ export const todosRecuder = createReducer(
     (state: TodoState, { index }: { index: number }): TodoState => {
       return {
         ...state,
-        data: state.data.map(
-          (v, i) => (i !== index ? v : { ...v, done: !v.done }) // on surcharge la clé done pour mettre l'inverse de v.done
+        data: state.data.map((v, i) =>
+          i !== index ? v : { ...v, done: !v.done }
         ),
       };
     }
   )
 );
-
-// maintenant, ici on a uniquement tout ce qui concerne la partie todos de notre state
-// on décrit ce qu'il y a dans la clé todos via une interface
-// on a un état initial
-// on a notre reducer
-
-// maintenant qu'on a fini de faire notre reducers qui prend en compte toutes les actions, il faut
-// que dans notre appli, au lieu d'utiliser notre service on dispatch des action, pour cela on va voir les selector

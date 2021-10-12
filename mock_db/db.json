@@ -1,0 +1,14 @@
+{
+  "todos": [
+    {
+      "id": "6159dbded8b4e5b9f0993e21",
+      "message": "Apprendre NGRX",
+      "done": true
+      },
+      {
+      "id": "6159dbecd8b4e5b9f0993e22",
+      "message": "Apprendre TypeScript",
+      "done": false
+      }
+  ]
+}
