@@ -5,15 +5,20 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { Todo } from '../interfaces/todo';
 import { TodoService } from '../services/todo.service';
 import {
+  addTodoAction,
+  deleteTodoAction,
   errorTodoAction,
   fetchTodosAction,
   fetchTodoSuccessAction,
+  tryAddTodoAction,
+  tryDeleteTodoAction,
+  tryUpdateTodoAction,
+  updateTodoAction,
 } from './todos.actions';
 
-// on passe cette class a EffectsModule.forRoot([]) sur appModule
 @Injectable()
 export class TodosEffects {
-  // createEffect() prend en param un fn qui return l'observable action$. C'est lui qui emmet toutes les actions dispatch de l'appli via le Store
+  constructor(private actions$: Actions, private todoService: TodoService) {}
   fetchTodosEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchTodosAction),
@@ -25,6 +30,42 @@ export class TodosEffects {
       )
     )
   );
-  // Actions est un observable fournit par ngrx/effects qui va etre à l'écoute de tous les dispatch d'actions de l'appli
-  constructor(private actions$: Actions, private todoService: TodoService) {}
+  // effect to try add
+  tryAddTodoEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(tryAddTodoAction),
+      switchMap(({ todo }: { todo: Todo }) =>
+        this.todoService.addTodo(todo).pipe(
+          map((todo: Todo) => addTodoAction({ todo })),
+          catchError((error) => of(errorTodoAction({ error })))
+        )
+      )
+    )
+  );
+
+  // effect to try update
+  tryUpdateTodoEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(tryUpdateTodoAction),
+      switchMap(({ todo }: { todo: Todo }) =>
+        this.todoService.updateTodo(todo).pipe(
+          map((todo: Todo) => updateTodoAction({ todo })),
+          catchError((error) => of(errorTodoAction({ error })))
+        )
+      )
+    )
+  );
+
+  // effect to try delete
+  tryDelateTodoEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(tryDeleteTodoAction),
+      switchMap(({ todo }: { todo: Todo }) =>
+        this.todoService.deleteTodo(todo).pipe(
+          map(() => deleteTodoAction({ todo })), // dans map je récupère pas la rep de l'api car return un string, par contre je dois passer à deleteTodoAction une toto, on utilise donc le payload recupérer dans le switchMap
+          catchError((error) => of(errorTodoAction({ error })))
+        )
+      )
+    )
+  );
 }

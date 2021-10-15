@@ -3,10 +3,10 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Todo } from './core/interfaces/todo';
 import {
-  addTodoAction,
-  deleteTodoAction,
   fetchTodosAction,
-  toggleTodoAction,
+  tryAddTodoAction,
+  tryDeleteTodoAction,
+  tryUpdateTodoAction,
 } from './core/store/todos.actions';
 import { selectTodosData } from './core/store/todos.selectors';
 
@@ -33,13 +33,14 @@ export class AppComponent implements OnInit {
 
   public addTodo() {
     this.store.dispatch(
-      addTodoAction({ item: { message: this.message, done: false } })
+      tryAddTodoAction({ todo: { message: this.message, done: false } })
     );
   }
-  public toggleTodo(index: number) {
-    this.store.dispatch(toggleTodoAction({ index: index }));
+  public updateTodo(todo: Todo) {
+    const newTodo = { ...todo, done: !todo.done };
+    this.store.dispatch(tryUpdateTodoAction({ todo: newTodo }));
   }
-  public deleteTodo(index: number) {
-    this.store.dispatch(deleteTodoAction({ index: index }));
+  public deleteTodo(todo: Todo) {
+    this.store.dispatch(tryDeleteTodoAction({ todo }));
   }
 }

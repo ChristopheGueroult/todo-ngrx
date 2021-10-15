@@ -37,32 +37,28 @@ export const todosRecuder = createReducer(
   ),
   on(
     TodosActions.addTodoAction,
-    (state: TodoState, { item }: { item: Todo }): TodoState => {
+    (state: TodoState, { todo }: { todo: Todo }): TodoState => {
       return {
         ...state,
-        data: [...state.data, item],
+        data: [...state.data, todo],
       };
     }
   ),
   on(
     TodosActions.deleteTodoAction,
-    (state: TodoState, { index }: { index: number }): TodoState => {
-      console.log(state);
-
+    (state: TodoState, { todo }: { todo: Todo }): TodoState => {
       return {
         ...state,
-        data: state.data.filter((v, i) => i !== index),
+        data: state.data.filter((v) => v._id !== todo._id),
       };
     }
   ),
   on(
-    TodosActions.toggleTodoAction,
-    (state: TodoState, { index }: { index: number }): TodoState => {
+    TodosActions.updateTodoAction,
+    (state: TodoState, { todo }: { todo: Todo }): TodoState => {
       return {
         ...state,
-        data: state.data.map((v, i) =>
-          i !== index ? v : { ...v, done: !v.done }
-        ),
+        data: state.data.map((v) => (v._id !== todo._id ? v : todo)),
       };
     }
   )

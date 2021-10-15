@@ -4,14 +4,12 @@
     <input class="form-control" type="text" [(ngModel)]="message">
     <button class="btn btn-success" (click)="addTodo()">Add</button>
     <br>
-    <li class="card-text" *ngFor="let item of todo$ | async; let i = index">
+    <li class="card-text" *ngFor="let item of todo$ | async">
       <div>{{item.message}}</div>
       <div>{{item.done}}</div>
       <div>
-        {{i}}
-
-        <button class="btn btn-primary" (click)="toggleTodo(i)">Toggle</button>
-        <button class="btn btn-danger" (click)="deleteTodo(i)">Delete</button>
+        <button class="btn btn-primary" (click)="updateTodo(item)">Update</button>
+        <button class="btn btn-danger" (click)="deleteTodo(item)">Delete</button>
       </div>
     </li>
   </div>

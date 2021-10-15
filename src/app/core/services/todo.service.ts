@@ -26,4 +26,24 @@ export class TodoService {
   public fetchTodos(): Observable<Todo[]> {
     return this.http.get<Todo[]>('https://restapi.fr/api/ngrxtodos');
   }
+  public updateTodo(item: Todo): Observable<Todo> {
+    const { _id, ...newTodo } = item;
+    // console.log(item);
+    // console.log(_id, newTodo);
+    return this.http.patch<Todo>(
+      `https://restapi.fr/api/ngrxtodos/${item._id}`,
+      newTodo
+    );
+  }
+  public deleteTodo(item: Todo): Observable<Todo> {
+    return this.http.delete<Todo>(
+      `https://restapi.fr/api/ngrxtodos/${item._id}`
+    );
+  }
+  public addTodo(item: Todo): Observable<Todo> {
+    return this.http.post<Todo>(
+      `https://restapi.fr/api/ngrxtodos/${item._id}`,
+      item
+    );
+  }
 }
