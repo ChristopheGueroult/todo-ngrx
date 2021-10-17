@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Todo } from '../interfaces/todo';
+import { Todo } from '../../core/interfaces/todo';
 
 export const fetchTodosAction = createAction('[ todos ] fetch todos');
 export const fetchTodoSuccessAction = createAction(
@@ -35,5 +35,14 @@ export const tryUpdateTodoAction = createAction(
 );
 export const updateTodoAction = createAction(
   '[ todos ] update todo',
+  props<{ todo: Todo }>()
+);
+// action capted by effect
+export const tryGetTodoAction = createAction(
+  '[ todos ] try get todo',
+  props<{ id: string }>()
+);
+export const getTodoAction = createAction(
+  '[ todos ] get todo',
   props<{ todo: Todo }>()
 );

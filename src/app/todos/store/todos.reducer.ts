@@ -1,16 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
-import { Todo } from '../interfaces/todo';
+import { Todo } from 'src/app/core/interfaces/todo';
 import * as TodosActions from './todos.actions';
 
 export interface TodoState {
   data: Todo[];
   // pour error
   error: any;
+  selectedTodo: Todo | null;
 }
 // on init le state.todos.data avec un tableau vide car on peut utiliser un effect pour l'init
 export const todoInitialState: TodoState = {
   data: [],
   error: null,
+  selectedTodo: null,
 };
 
 export const todoFeatureKey = 'todos';
@@ -59,6 +61,15 @@ export const todosRecuder = createReducer(
       return {
         ...state,
         data: state.data.map((v) => (v._id !== todo._id ? v : todo)),
+      };
+    }
+  ),
+  on(
+    TodosActions.getTodoAction,
+    (state: TodoState, { todo }: { todo: Todo }): TodoState => {
+      return {
+        ...state,
+        selectedTodo: todo,
       };
     }
   )

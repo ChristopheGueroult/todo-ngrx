@@ -1,6 +1,10 @@
 import { routerReducer, RouterState } from '@ngrx/router-store';
 import { Action, ActionReducerMap } from '@ngrx/store';
-import { todoFeatureKey, todosRecuder, TodoState } from './todos.reducer';
+import {
+  todoFeatureKey,
+  todosRecuder,
+  TodoState,
+} from '../../todos/store/todos.reducer';
 
 export interface AppState {
   todos: TodoState;

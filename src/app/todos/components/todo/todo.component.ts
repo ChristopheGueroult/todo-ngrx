@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Todo } from 'src/app/core/interfaces/todo';
@@ -6,12 +7,13 @@ import {
   fetchTodosAction,
   tryAddTodoAction,
   tryDeleteTodoAction,
+  tryGetTodoAction,
   tryUpdateTodoAction,
-} from 'src/app/core/store/todos.actions';
+} from 'src/app/todos/store/todos.actions';
 import {
-  selectTodoById,
+  selectTodo,
   selectTodosData,
-} from 'src/app/core/store/todos.selectors';
+} from 'src/app/todos/store/todos.selectors';
 
 @Component({
   selector: 'app-todo',
@@ -27,10 +29,15 @@ export class TodoComponent implements OnInit {
   // });
   public todo$: Observable<Todo[]> = this.store.select(selectTodosData);
   public selectedTodo$: Observable<Todo | null | undefined> =
-    this.store.select(selectTodoById);
+    this.store.select(selectTodo);
   public message!: string;
   // constructor(private store: Store<AppState>) {} // ex si on souhaite use la fonction select() dans ce component
-  constructor(private store: Store) {} // plus besoin de typer le store injecter avec AppStore car on use uniquement les selectors d'rxjs
+  constructor(private store: Store, private route: ActivatedRoute) {
+    this.route.paramMap.subscribe((params: Params) => {
+      const id = params.get('id');
+      this.store.dispatch(tryGetTodoAction({ id }));
+    });
+  }
 
   ngOnInit(): void {
     this.store.dispatch(fetchTodosAction());
