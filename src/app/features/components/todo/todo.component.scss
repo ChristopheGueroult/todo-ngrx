@@ -1,0 +1,6 @@
+li {
+  display: flex;
+  div:first-child {
+    flex-grow: 1;
+  }
+}

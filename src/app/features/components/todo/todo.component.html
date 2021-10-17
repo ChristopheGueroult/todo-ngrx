@@ -1,0 +1,26 @@
+<div class="card">
+  <h5 class="card-header">Todo List</h5>
+  <div class="card-body">
+    <input class="form-control" type="text" [(ngModel)]="message">
+    <button class="btn btn-success" (click)="addTodo()">Add</button>
+    <br>
+    <li [routerLink]="['/', item._id]" class="card-text" *ngFor="let item of todo$ | async">
+      <div>{{item.message}}</div>
+      <div>{{item.done}}</div>
+      <div>
+        <button class="btn btn-primary" (click)="updateTodo(item)">Update</button>
+        <button class="btn btn-danger" (click)="deleteTodo(item)">Delete</button>
+      </div>
+    </li>
+  </div>
+</div>
+
+<div class="card" *ngIf="selectedTodo$ | async as selectedTodo">
+  <h5 class="card-header">Todo Detail</h5>
+  <div class="card-body">
+    <li class="card-text">
+      <div>{{selectedTodo.message}}</div>
+      <div>{{selectedTodo.done}}</div>
+    </li>
+  </div>
+</div>

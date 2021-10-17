@@ -12,9 +12,11 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { rootReducers } from './core/store/index';
 import { TodosEffects } from './core/store/todos.effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { TodoComponent } from './features/components/todo/todo.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TodoComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -27,7 +29,8 @@ import { TodosEffects } from './core/store/todos.effects';
       maxAge: 25,
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot([TodosEffects]), //prend en param un class @Injectable qui va elle meme injecter un objservable fourni pas effectModule. Cet observable va emmetre à chaque fois que l'appli va dispatch une action
+    EffectsModule.forRoot([TodosEffects]),
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

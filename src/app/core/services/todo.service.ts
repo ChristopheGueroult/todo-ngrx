@@ -46,4 +46,7 @@ export class TodoService {
       item
     );
   }
+  public getTodoById(id: string): Observable<Todo> {
+    return this.http.get<Todo>(`https://restapi.fr/api/ngrxtodos/${id}`);
+  }
 }
